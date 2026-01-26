@@ -81,7 +81,7 @@ const Home = () => {
               A Cooperativa de <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-400">Entregas</span> que seu negócio precisa.
             </h1>
             <p className="text-lg text-slate-400 max-w-lg leading-relaxed font-light">
-              Terceirize suas entregas com a Entrega.AI. Conectamos seu restaurante a uma cooperativa de motoboys profissional, ágil e segura. O "Uber" das entregas para o seu estabelecimento.
+              Terceirize suas entregas com a Entrega.AI. Conectamos seu restaurante a uma cooperativa de motoboys profissional, ágil e segura. <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-400 font-bold">Programe suas entregas</span> fixas diariamente, com rotas exclusivas para seus <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-400 font-bold">clientes fiéis</span>!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button className="flex items-center justify-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all hover:translate-y-[-2px] shadow-xl shadow-orange-500/25 group">
