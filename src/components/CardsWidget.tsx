@@ -1,5 +1,3 @@
-import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ToggleSwitch } from './inputs/ToggleSwitch';
 
 export const CardsWidget = () => {

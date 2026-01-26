@@ -1,4 +1,4 @@
-import { Bell, Wallet, User } from 'lucide-react';
+import { Bell, Wallet } from 'lucide-react';
 
 export const Header = () => {
     return (
