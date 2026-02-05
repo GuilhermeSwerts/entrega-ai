@@ -10,8 +10,10 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -45,9 +47,12 @@ const Home = () => {
             <a href="#restaurantes" className="hover:text-orange-500 transition-colors">Para Restaurantes</a>
             <a href="#entregadores" className="hover:text-orange-500 transition-colors">Para Entregadores</a>
             <a href="#como-funciona" className="hover:text-orange-500 transition-colors">Como Funciona</a>
-            <button className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/25">
-              Começar Agora/Entrar
-            </button>
+            <Link to="/register" className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/25">
+              Começar Agora
+            </Link>
+            <Link to="/login" className="px-6 py-2.5 text-white font-semibold rounded-full transition-all hover:scale-105 active:scale-95">
+              Entrar
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
@@ -62,7 +67,8 @@ const Home = () => {
             <a href="#restaurantes" className="text-lg py-2 border-b border-white/5" onClick={() => setIsMenuOpen(false)}>Para Restaurantes</a>
             <a href="#entregadores" className="text-lg py-2 border-b border-white/5" onClick={() => setIsMenuOpen(false)}>Para Entregadores</a>
             <a href="#como-funciona" className="text-lg py-2 border-b border-white/5" onClick={() => setIsMenuOpen(false)}>Como Funciona</a>
-            <button className="w-full py-4 bg-orange-500 text-white font-bold rounded-xl mt-4">Começar Agora</button>
+            <Link to="/register" className="w-full text-lg py-2 border-b border-white/5">Começar Agora</Link>
+            <Link to="/login" className="w-full text-lg py-2 border-b border-white/5">Entrar</Link>
           </div>
         )}
       </nav>
@@ -84,13 +90,13 @@ const Home = () => {
               Terceirize suas entregas com a Entrega.AI. Conectamos seu restaurante a uma cooperativa de motoboys profissional, ágil e segura. <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-400 font-bold">Programe suas entregas</span> fixas diariamente, com rotas exclusivas para seus <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-400 font-bold">clientes fiéis</span>!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button className="flex items-center justify-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all hover:translate-y-[-2px] shadow-xl shadow-orange-500/25 group">
+              <a href="#restaurantes" className="flex items-center justify-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all hover:translate-y-[-2px] shadow-xl shadow-orange-500/25 group">
                 Sou Restaurante
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="flex items-center justify-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-2xl transition-all">
+              </a>
+              <a href="#entregadores" className="flex items-center justify-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-2xl transition-all">
                 Quero ser Entregador
-              </button>
+              </a>
             </div>
           </div>
 
@@ -156,13 +162,19 @@ const Home = () => {
                   { title: 'Segurança e Garantia', desc: 'Entrega garantida pela nossa cooperativa com seguro contra danos.', icon: <ShieldCheck className="text-orange-500" /> },
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4 p-4 rounded-2xl hover:bg-white/5 transition-all border border-transparent hover:border-white/5 group">
-                    <div className="mt-1 p-2 rounded-lg bg-white/5 group-hover:bg-orange-500/10 transition-colors">{item.icon}</div>
+                    <div className="mt-1 h-10 p-2 rounded-lg bg-white/5 group-hover:bg-orange-500/10 transition-colors">{item.icon}</div>
                     <div>
                       <h3 className="font-bold text-white text-lg tracking-tight" style={{ fontFamily: 'Outfit, sans-serif' }}>{item.title}</h3>
                       <p className="text-slate-400 font-light">{item.desc}</p>
                     </div>
                   </div>
                 ))}
+                <div className="w-full">
+                  <button onClick={() => navigate("/register")}
+                    className="w-full px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/25">
+                    Começar Agora
+                  </button>
+                </div>
               </div>
             </div>
           </div>

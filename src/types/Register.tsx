@@ -1,0 +1,1 @@
+export type RegisterStepType = 'CompanyData' | 'UserData' | 'EmailConfirmation'
