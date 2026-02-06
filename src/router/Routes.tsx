@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import Home from "../pages/home/Home";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
+import OrderSolicitation from "../pages/orderSolicitation/OrderSolicitation";
 import { api } from "../services/api";
 import type { IRoutes } from "../interface/IRoutes";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Wallet from "../pages/wallet/Wallet";
+import Layout from "../components/layout/Layout";
+import { useRoutes } from "../context/RoutesContext";
 
 export const routesMap = [
     { path: "/", component: Home },
     { path: "/register", component: Register },
-    { path: "/login", component: Login }
+    { path: "/login", component: Login },
+    { path: "/order-solicitation", component: OrderSolicitation }
 ]
 
 export default function NotFound() {
@@ -53,7 +57,8 @@ const RoutesComponent = {
     Home,
     Register,
     Login,
-    'Dashboard': Wallet
+    'Dashboard': Wallet,
+    'OrderSolicitation': OrderSolicitation
 }
 
 type ComponentKeys = keyof typeof RoutesComponent; // 'Home' | 'Register' | 'Login'
@@ -61,8 +66,7 @@ type ComponentKeys = keyof typeof RoutesComponent; // 'Home' | 'Register' | 'Log
 export const RouterMap = () => {
     // const navigate = useNavigate()
     const location = useLocation();
-    const [routesMap, setRoutesMap] = useState<IRoutes[]>([])
-
+    const { routesMap, setRoutesMap } = useRoutes()
 
     useEffect(() => {
         api.get<IRoutes[]>("Customer/Routes", response => {
@@ -70,15 +74,23 @@ export const RouterMap = () => {
         }, true);
     }, [location.pathname]);
 
-    const getComponent = (name: ComponentKeys) => {
-        const Component = RoutesComponent[name];
+    const getComponent = (route: IRoutes) => {
+        const key = route.component as ComponentKeys
+        const Component = RoutesComponent[key];
 
         if (!Component) {
-            console.error("Componente não encontrado:", name);
+            console.error("Componente não encontrado:", key);
             return <NotFound />;
         }
 
-        return <Component />;
+        return <Layout
+            title={route.route}
+            Icon={route.icon}
+            subTitle={route.subTitle}
+            key={route.path}
+        >
+            <Component />
+        </Layout>;
     };
 
     return (
@@ -87,12 +99,14 @@ export const RouterMap = () => {
                 <Route
                     key={route.path}
                     path={route.path}
-                    element={getComponent(route.component as any)}
+                    element={getComponent(route)}
                 />
             ))}
-            <Route path='/' element={getComponent('Home')} />
-            <Route path='/register' element={getComponent('Register')} />
-            <Route path='/login' element={getComponent('Login')} />
+
+            <Route path='/' element={<Home />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/teste' element={<OrderSolicitation />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
     );

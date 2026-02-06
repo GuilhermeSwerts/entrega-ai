@@ -3,4 +3,5 @@ export interface IRoutes {
     path: string;
     icon?: string;
     component: string;
+    subTitle?: string;
 }

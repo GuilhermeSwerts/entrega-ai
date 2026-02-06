@@ -9,19 +9,25 @@ import {
     Menu,
     X
 } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
+import { useRoutes } from "../context/RoutesContext";
 
-const navItems = [
-    { icon: Wallet, label: "Carteira", active: true },
-    { icon: BarChart3, label: "Análise", active: false },
-    { icon: PackagePlus, label: "Solicitar Entrega", active: false },
-    { icon: PackageCheck, label: "Minhas Entregas", active: false },
-    { icon: UserCog, label: "Meu Perfil", active: false },
-    { icon: HelpCircle, label: "Ajuda", active: false }
-];
+// const navItems = [
+//     { icon: Wallet, label: "Carteira", path: "/dashboard", active: true },
+//     { icon: BarChart3, label: "Análise", path: "#", active: false },
+//     { icon: PackagePlus, label: "Solicitar Entrega", path: "/order-solicitation", active: false },
+//     { icon: PackageCheck, label: "Minhas Entregas", path: "#", active: false },
+//     { icon: UserCog, label: "Meu Perfil", path: "#", active: false },
+//     { icon: HelpCircle, label: "Ajuda", path: "#", active: false }
+// ];
 
 export const Sidebar = () => {
+    const location = useLocation();
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
+    const { routesMap } = useRoutes();
+
 
     return (
         <>
@@ -72,28 +78,35 @@ export const Sidebar = () => {
                 </div>
 
                 <nav className="flex-1 space-y-2">
-                    {navItems.map((item) => (
-                        <button
-                            key={item.label}
-                            className={cn(
-                                "w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-200 group text-sm font-medium",
-                                item.active
-                                    ? "bg-indigo-50 text-indigo-600"
-                                    : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
-                            )}
-                            onClick={() => setOpen(false)}
-                        >
-                            <item.icon
+                    {routesMap.map((item) => {
+                        const Icon = item.icon ? (item.icon as any) : null
+
+                        return (
+                            <button
+                                key={item.route}
                                 className={cn(
-                                    "w-5 h-5",
-                                    item.active
-                                        ? "text-indigo-600"
-                                        : "text-slate-400 group-hover:text-slate-600"
+                                    "w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-200 group text-sm font-medium",
+                                    location.pathname == item.path
+                                        ? "bg-indigo-50 text-indigo-600"
+                                        : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
                                 )}
-                            />
-                            {item.label}
-                        </button>
-                    ))}
+                                onClick={() => {
+                                    setOpen(false);
+                                    if (item.path !== "#") navigate(item.path);
+                                }}
+                            >
+                                {Icon && <Icon
+                                    className={cn(
+                                        "w-5 h-5",
+                                        location.pathname == item.path
+                                            ? "text-indigo-600"
+                                            : "text-slate-400 group-hover:text-slate-600"
+                                    )}
+                                />}
+                                {item.route}
+                            </button>
+                        );
+                    })}
                 </nav>
             </aside>
         </>
