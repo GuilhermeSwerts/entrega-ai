@@ -1,3 +1,4 @@
+import type { ILoginCustomer } from "../../interface/ILogin";
 import type { ICustomerRegister } from "../../interface/Register";
 import { Alert } from "../../util/alert";
 import { api } from "../api";
@@ -17,6 +18,20 @@ export const ResentValidationCode = (id_customer: string, callBack?: () => void)
 
 export const ValidationCodeEmail = (id_customer: string, code: string, callBack?: () => void) => {
     api.get<string>(baseURL + `/${id_customer}/validation-code?code=${code}`, (msg) => {
+        Alert(msg)
+        callBack?.();
+    })
+}
+
+export const LoginCustomer = (data: ILoginCustomer, callBack: () => void) => {
+    api.post<string>(baseURL + `/login`, data, (msg) => {
+        Alert(msg)
+        callBack?.();
+    })
+}
+
+export const LoggoutCustomer = (callBack: () => void) => {
+    api.post<string>(baseURL + `/loggout`, {}, (msg) => {
         Alert(msg)
         callBack?.();
     })

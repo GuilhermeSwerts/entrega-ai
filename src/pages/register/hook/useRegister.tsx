@@ -7,6 +7,7 @@ import type { OptionType } from "../../../types/SearchableSelect";
 import { restaurantTypes } from "../../../util/dataMock";
 import { PatternEnum } from "../../../lib/enum";
 import { RegisterCustomer, ResentValidationCode, ValidationCodeEmail } from "../../../services/Customer/CustomerService";
+import { useNavigate } from "react-router-dom";
 
 const ruleCompanyData = {
     razaoSocial: {
@@ -51,7 +52,7 @@ const ruleUserData = {
 
 export const useRegister = () => {
     const [id_customer, setIdCustomer] = useState<string>('');
-
+    const navigate = useNavigate();
     const [scrolled, setScrolled] = useState(false);
     const [currentStep, setCurrentStep] = useState<RegisterStepType>("CompanyData");
     const [dynamicRules, setDynamicRules] = useState<{ [key: string]: ValidationRulesType }>({});
@@ -138,7 +139,7 @@ export const useRegister = () => {
         }
 
         if (currentStep === "EmailConfirmation" && code) {
-            ValidationCodeEmail(id_customer, code)
+            ValidationCodeEmail(id_customer, code, () => navigate('/dashboard'))
         }
 
     }

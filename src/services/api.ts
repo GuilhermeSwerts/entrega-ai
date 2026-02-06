@@ -14,14 +14,16 @@ export default class Api {
         this.loginPage = "/login";
         this.api = axios.create({
             baseURL: urlBase,
+            withCredentials: true
         });
     }
 
     private execute = <T = any>(
         apiCall: Promise<AxiosResponse<ApiResponse<T>>>,
-        funcResult?: (data: T) => void
+        funcResult?: (data: T) => void,
+        hiddenLoader?: boolean
     ): void => {
-        setGlobalLoader(true);
+        !hiddenLoader && setGlobalLoader(true);
         apiCall
             .then((response) => {
                 if (response.data.requestSuccess) {
@@ -31,7 +33,7 @@ export default class Api {
 
                 const { message, exception } = response.data.erro || {};
                 console.log(exception);
-                Alert(message ?? "Erro desconhecido", false);
+                Alert(message ?? "Erro desconhecido", '', false);
             })
             .catch((err: any) => {
                 console.error({ error: err });
@@ -42,19 +44,19 @@ export default class Api {
                 }
 
                 if (err.response && err.response.data && err.response.data.exception)
-                    Alert(err.response.data.erro.exception.message, false);
+                    Alert(err.response.data.erro.exception.message, '', false);
                 else if (err.response && err.response.data && err.response.data.erro)
-                    Alert(err.response.data.erro.message, false);
+                    Alert(err.response.data.erro.message, '', false);
                 else
-                    Alert("Houve um erro na solicitação! Por favor tente novamente mais tarde", false);
+                    Alert("Houve um erro na solicitação! Por favor tente novamente mais tarde", '', false);
             })
             .finally(() => {
                 setGlobalLoader(false);
             });
     };
 
-    get = <T = any>(url: string, funcResult?: Callback<T>): void => {
-        this.execute<T>(this.api.get<ApiResponse<T>>(url), funcResult);
+    get = <T = any>(url: string, funcResult?: Callback<T>, hiddenLoader?: boolean): void => {
+        this.execute<T>(this.api.get<ApiResponse<T>>(url), funcResult, hiddenLoader);
     };
 
     delete = <T = any>(url: string, funcResult?: Callback<T>): void => {
