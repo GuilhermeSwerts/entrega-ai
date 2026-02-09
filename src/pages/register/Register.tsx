@@ -19,7 +19,7 @@ import Button from '../../components/inputs/Button';
 import { Terms } from '../../util/dataUtil';
 import { TokenInput } from '../../components/inputs/TokenInput';
 import CheckboxSelect from '../../components/inputs/CheckboxSelect';
-import { maskCnpj, maskCpf } from '../../util/mask';
+import { maskCnpj, maskCpf, maskPhone } from '../../util/mask';
 
 
 const Register = () => {
@@ -215,7 +215,7 @@ const Register = () => {
                                     label="WhatsApp"
                                     placeholder="(00) 00000-0000"
                                     name="whatsapp"
-                                    value={form.whatsapp}
+                                    value={maskPhone(form.whatsapp)}
                                     onChange={handleChange}
                                     maxLength={15}
                                 />

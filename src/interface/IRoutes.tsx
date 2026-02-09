@@ -4,4 +4,10 @@ export interface IRoutes {
     icon?: string;
     component: string;
     subTitle?: string;
+    rule?: IRuleRoutes;
+}
+
+export interface IRuleRoutes {
+    canAccess: boolean;
+    message: string;
 }

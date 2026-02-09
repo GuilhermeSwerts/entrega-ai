@@ -1,3 +1,4 @@
+import type { ICustomer } from "../../interface/ICustomer";
 import type { ILoginCustomer } from "../../interface/ILogin";
 import type { ICustomerRegister } from "../../interface/Register";
 import { Alert } from "../../util/alert";
@@ -35,4 +36,11 @@ export const LoggoutCustomer = (callBack: () => void) => {
         Alert(msg)
         callBack?.();
     })
+}
+
+export const CustomerMe = (callBack?: (userData: ICustomer) => void) => {
+    api.get<ICustomer>(baseURL + `/me`, (user) => {
+        if (user)
+            callBack?.(user);
+    }, true)
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Home from "../pages/home/Home";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
@@ -9,6 +9,8 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Wallet from "../pages/wallet/Wallet";
 import Layout from "../components/layout/Layout";
 import { useRoutes } from "../context/RoutesContext";
+import { BarChart2, BarChart3, HelpCircle, PackageCheck, PackagePlus, UserCog, Wallet as WalletIcon } from "lucide-react";
+import Profile from "../pages/profile/Profile";
 
 export const routesMap = [
     { path: "/", component: Home },
@@ -53,12 +55,32 @@ export default function NotFound() {
     )
 }
 
+const LoadingSpinner: React.FC = () => {
+    return (
+        <div className="flex items-center justify-center h-screen w-screen">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+        </div>
+    );
+};
+
+export const RoutesIcon = {
+    Wallet: WalletIcon,
+    BarChart3,
+    BarChart2,
+    PackagePlus,
+    PackageCheck,
+    UserCog,
+    HelpCircle
+}
+
 const RoutesComponent = {
     Home,
     Register,
     Login,
     'Dashboard': Wallet,
-    'OrderSolicitation': OrderSolicitation
+    Wallet,
+    OrderSolicitation,
+    Profile
 }
 
 type ComponentKeys = keyof typeof RoutesComponent; // 'Home' | 'Register' | 'Login'
@@ -77,15 +99,22 @@ export const RouterMap = () => {
     const getComponent = (route: IRoutes) => {
         const key = route.component as ComponentKeys
         const Component = RoutesComponent[key];
+        const Icon = route.icon ? RoutesIcon[(route.icon as keyof typeof RoutesIcon)] : null;
 
         if (!Component) {
-            console.error("Componente não encontrado:", key);
-            return <NotFound />;
+            return <Layout
+                title={route.route}
+                Icon={Icon ? <Icon className="text-gray-800" /> : null}
+                subTitle={route.subTitle}
+                key={route.path}
+            >
+                <NotFound />
+            </Layout>;
         }
 
         return <Layout
             title={route.route}
-            Icon={route.icon}
+            Icon={Icon ? <Icon /> : null}
             subTitle={route.subTitle}
             key={route.path}
         >
@@ -107,7 +136,7 @@ export const RouterMap = () => {
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/teste' element={<OrderSolicitation />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path='*' element={<LoadingSpinner />} />
         </Routes>
     );
 };

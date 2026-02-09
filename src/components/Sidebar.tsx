@@ -1,33 +1,20 @@
 import { useState } from "react";
 import {
-    BarChart3,
-    HelpCircle,
-    Wallet,
-    PackagePlus,
-    PackageCheck,
-    UserCog,
+    LogOut,
     Menu,
     X
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { useRoutes } from "../context/RoutesContext";
-
-// const navItems = [
-//     { icon: Wallet, label: "Carteira", path: "/dashboard", active: true },
-//     { icon: BarChart3, label: "Análise", path: "#", active: false },
-//     { icon: PackagePlus, label: "Solicitar Entrega", path: "/order-solicitation", active: false },
-//     { icon: PackageCheck, label: "Minhas Entregas", path: "#", active: false },
-//     { icon: UserCog, label: "Meu Perfil", path: "#", active: false },
-//     { icon: HelpCircle, label: "Ajuda", path: "#", active: false }
-// ];
+import { RoutesIcon } from "../router/Routes";
+import { LoggoutCustomer } from "../services/Customer/CustomerService";
 
 export const Sidebar = () => {
     const location = useLocation();
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const { routesMap } = useRoutes();
-
 
     return (
         <>
@@ -79,34 +66,84 @@ export const Sidebar = () => {
 
                 <nav className="flex-1 space-y-2">
                     {routesMap.map((item) => {
-                        const Icon = item.icon ? (item.icon as any) : null
+                        const Icon = item.icon
+                            ? RoutesIcon[item.icon as keyof typeof RoutesIcon]
+                            : null;
+
+                        const hasRule = !!item.rule;
+                        const canAccess = hasRule ? item.rule!.canAccess : true;
 
                         return (
-                            <button
-                                key={item.route}
-                                className={cn(
-                                    "w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-200 group text-sm font-medium",
-                                    location.pathname == item.path
-                                        ? "bg-indigo-50 text-indigo-600"
-                                        : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
-                                )}
-                                onClick={() => {
-                                    setOpen(false);
-                                    if (item.path !== "#") navigate(item.path);
-                                }}
-                            >
-                                {Icon && <Icon
+                            <div key={item.route} className="w-full relative group">
+                                <button
+                                    disabled={!canAccess}
                                     className={cn(
-                                        "w-5 h-5",
-                                        location.pathname == item.path
-                                            ? "text-indigo-600"
-                                            : "text-slate-400 group-hover:text-slate-600"
+                                        "w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-200 text-sm font-medium",
+                                        canAccess
+                                            ? location.pathname === item.path
+                                                ? "bg-indigo-50 text-indigo-600"
+                                                : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
+                                            : "text-slate-300 cursor-not-allowed opacity-70"
                                     )}
-                                />}
-                                {item.route}
-                            </button>
+                                    onClick={() => {
+                                        if (!canAccess) return;
+                                        setOpen(false);
+                                        if (item.path !== "#") navigate(item.path);
+                                    }}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        {Icon && (
+                                            <Icon
+                                                className={cn(
+                                                    "w-5 h-5",
+                                                    canAccess
+                                                        ? location.pathname === item.path
+                                                            ? "text-indigo-600"
+                                                            : "text-slate-400 group-hover:text-slate-600"
+                                                        : "text-slate-300"
+                                                )}
+                                            />
+                                        )}
+                                        {item.route}
+                                    </span>
+                                </button>
+
+                                {/* Tooltip */}
+                                {!canAccess && hasRule && (
+                                    <div className="
+                    pointer-events-none
+                    absolute left-full top-1/2 -translate-y-1/2 ml-3
+                    w-64
+                    bg-slate-900 text-white text-xs
+                    rounded-lg px-3 py-2
+                    opacity-0 group-hover:opacity-100
+                    transition-opacity duration-200
+                    shadow-lg
+                    z-50
+                ">
+                                        {item.rule!.message}
+                                    </div>
+                                )}
+                            </div>
                         );
                     })}
+                    <div className="w-full">
+                        <button
+                            className={cn(
+                                "w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-200 group text-sm font-medium", "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
+                            )}
+                            onClick={() => {
+                                LoggoutCustomer(() => {
+                                    navigate("/login")
+                                });
+                            }}
+                        >
+                            <span className="flex items-center gap-2">
+                                <LogOut className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
+                                Sair
+                            </span>
+                        </button>
+                    </div>
                 </nav>
             </aside>
         </>

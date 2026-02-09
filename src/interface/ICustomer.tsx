@@ -1,0 +1,16 @@
+export interface ICustomer {
+    companyName: string,
+    cnpj: string,
+    businessDays: string,
+    businessHoursStart?: string,
+    businessHoursEnd?: string,
+    restaurantTypeId?: string,
+    otherRestaurantType?: string,
+    responsibleName: string,
+    responsibleCpf: string,
+    whatsapp: string,
+    email: string,
+    passwordHash: string,
+    termsAccepted: boolean,
+    emailAuthenticate: boolean,
+}

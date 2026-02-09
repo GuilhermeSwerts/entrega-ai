@@ -1,4 +1,4 @@
-import { Bell, Wallet } from 'lucide-react';
+import { useUserData } from "../context/UserDataContext";
 
 type HeaderProps = {
     title: string;
@@ -7,11 +7,15 @@ type HeaderProps = {
 }
 
 export const Header = ({ title, Icon, subTitle }: HeaderProps) => {
+    const { userData } = useUserData()
+
+    const name = userData ? userData.companyName : "";
+
     return (
         <header className="flex items-center justify-between mb-8 mt-10 md:mt-0">
             <div>
-                <h1 className="text-3xl font-bold text-slate-800 flex items-center gap-2">{title} <Icon /></h1>
-                {subTitle && <p className="text-slate-400 text-sm mt-1">{subTitle}</p>}
+                <h1 className="text-3xl font-bold text-slate-800 flex items-center gap-2">{title} {Icon}</h1>
+                {subTitle && <p className="text-slate-400 text-sm mt-1">{subTitle.replace("{name}", name)}</p>}
             </div>
 
             {/* <div className="flex items-center gap-4">

@@ -45,6 +45,9 @@ export default class Api {
                 return;
             }
 
+            if(err.response?.status === 204)
+                return;
+
             if (err.response?.data?.exception)
                 Alert(err.response.data.erro.exception.message, '', false);
             else if (err.response?.data?.erro)
