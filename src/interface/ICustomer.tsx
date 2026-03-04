@@ -21,4 +21,6 @@ export interface ICustomer {
     addressState?: string | null,
     addressCountry?: string | null,
     addressZipCode?: string | null,
+    lon?: number | null,
+    lat?: number | null,
 }

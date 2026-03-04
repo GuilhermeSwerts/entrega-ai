@@ -72,17 +72,17 @@ const Routing = ({ waypoints }: RoutingProps) => {
 };
 
 interface MapComponentProps {
+    defaultPosition: [number, number];
     orderLocation?: [number, number];
     restaurantLocation?: [number, number];
     motoboys?: Array<{ id: string; position: [number, number]; name: string; status?: 'available' | 'busy' }>;
     route?: Array<[number, number]>;
 }
 
-export const MapComponent = ({ orderLocation, restaurantLocation, motoboys = [], route = [] }: MapComponentProps) => {
-    const defaultPosition: [number, number] = [-23.5505, -46.6333]; // São Paulo default
+export const MapComponent = ({ orderLocation, restaurantLocation, motoboys = [], route = [], defaultPosition }: MapComponentProps) => {
 
     const center = orderLocation || restaurantLocation || (motoboys.length > 0 ? motoboys[0].position : defaultPosition);
-
+        
     return (
         <div className="h-full w-full rounded-2xl overflow-hidden shadow-inner border border-gray-200">
             <MapContainer
@@ -123,7 +123,7 @@ export const MapComponent = ({ orderLocation, restaurantLocation, motoboys = [],
                                 {moto.name}
                             </div>
                             <div className="text-xs text-slate-400">
-                                {moto.status === 'busy' ? 'Em entrega' : 'Disponível'}
+                                {moto.status === 'busy' ? 'Em rota' : 'Disponível'}
                             </div>
                         </Popup>
                     </Marker>

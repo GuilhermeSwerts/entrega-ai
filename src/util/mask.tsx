@@ -58,3 +58,14 @@ export const formatDateForApi = (dateOfBirth: string) => {
     const [day, month, year] = dateOfBirth.split('/');
     return `${year}-${month}-${day}`;
 };
+
+export function formatDuration(duration: string | number): string {
+    let minutos: number;
+    if (typeof duration === "string") {
+        minutos = parseFloat(duration.replace(" Minutos", ""));
+    } else {
+        minutos = duration;
+    }
+
+    return `${minutos} min`;
+}
