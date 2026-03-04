@@ -2,6 +2,7 @@ import { setGlobalLoader } from '../context/LoaderContext';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import { type ApiResponse } from '../types/ApiResponseType';
 import { Alert } from '../util/alert';
+import { clearUserDataGlobal } from '../globalHook/userDataGlobal';
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -40,8 +41,8 @@ export default class Api {
             console.error({ error: err });
 
             if (err.response?.status === 401) {
-                window.localStorage.removeItem('access_token');
                 window.location.href = this.loginPage;
+                clearUserDataGlobal()
                 return;
             }
 

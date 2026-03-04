@@ -24,10 +24,10 @@ export const ValidationCodeEmail = (id_customer: string, code: string, callBack?
     })
 }
 
-export const LoginCustomer = (data: ILoginCustomer, callBack: () => void) => {
-    api.post<string>(baseURL + `/login`, data, (msg) => {
-        Alert(msg)
-        callBack?.();
+export const LoginCustomer = (data: ILoginCustomer, callBack: (userData: ICustomer) => void) => {
+    api.post<ICustomer>(baseURL + `/login`, data, (data) => {
+        Alert("Login realizado com sucesso. Aguarde, você será redirecionado em breve.")
+        callBack?.(data);
     })
 }
 
@@ -43,4 +43,11 @@ export const CustomerMe = (callBack?: (userData: ICustomer) => void) => {
         if (user)
             callBack?.(user);
     }, true)
+}
+
+export const UpdateCustomer = (data: ICustomer, callBack?: () => void) => {
+    api.put<string>(baseURL, data, () => {
+        Alert("Dados salvos com sucesso!");
+        callBack?.();
+    });
 }

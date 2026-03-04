@@ -17,7 +17,7 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         <LoaderContext.Provider value={{ setLoader: setLoading }}>
             {children}
             {loading && (
-                <div className="fixed inset-0 bg-white/50 flex items-center flex-col justify-center z-50">
+                <div className="fixed inset-0 bg-white/50 flex items-center flex-col justify-center z-2550">
                     <div className="flex gap-2 items-center justify-center">
                         <span className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></span>
                         <span className="w-3 h-3 bg-blue-500 rounded-full animate-bounce [animation-delay:0.15s]"></span>

@@ -98,3 +98,13 @@ export function isOfLegalAge(date_of_birth: string) {
 
     return age >= 18
 }
+
+export function GetFieldsRequireds<T>(
+  keys: (keyof T)[]
+): Record<(typeof keys)[number], { required: true }> {
+
+  return keys.reduce((acc, key) => {
+    acc[key] = { required: true };
+    return acc;
+  }, {} as Record<(typeof keys)[number], { required: true }>);
+}

@@ -13,4 +13,12 @@ export interface ICustomer {
     passwordHash: string,
     termsAccepted: boolean,
     emailAuthenticate: boolean,
+    addressStreet?: string | null,
+    addressNumber?: string | null,
+    addressComplement?: string | null,
+    addressNeighborhood?: string | null,
+    addressCity?: string | null,
+    addressState?: string | null,
+    addressCountry?: string | null,
+    addressZipCode?: string | null,
 }

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { LoginCustomer } from '../../../services/Customer/CustomerService';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useUserData } from '../../../context/UserDataContext';
 
 export const useLogin = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { setUserData } = useUserData();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +24,11 @@ export const useLogin = () => {
         LoginCustomer({
             email,
             password
-        }, () => navigate('/dashboard'))
+        }, (data) => {
+            setUserData(data);
+            const from = location.state?.from || '/dashboard';
+            navigate(from, { replace: true });
+        })
     };
 
     return {

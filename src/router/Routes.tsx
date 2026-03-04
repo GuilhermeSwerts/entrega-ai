@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Home from "../pages/home/Home";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
@@ -11,6 +11,7 @@ import Layout from "../components/layout/Layout";
 import { useRoutes } from "../context/RoutesContext";
 import { BarChart2, BarChart3, HelpCircle, PackageCheck, PackagePlus, UserCog, Wallet as WalletIcon } from "lucide-react";
 import Profile from "../pages/profile/Profile";
+import { useUserData } from "../context/UserDataContext";
 
 export const routesMap = [
     { path: "/", component: Home },
@@ -56,9 +57,23 @@ export default function NotFound() {
 }
 
 const LoadingSpinner: React.FC = () => {
+    const [timeoutReached, setTimeoutReached] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTimeoutReached(true);
+        }, 2500);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (timeoutReached) {
+        return <NotFound />;
+    }
+
     return (
         <div className="flex items-center justify-center h-screen w-screen">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500" />
         </div>
     );
 };
@@ -88,13 +103,15 @@ type ComponentKeys = keyof typeof RoutesComponent; // 'Home' | 'Register' | 'Log
 export const RouterMap = () => {
     // const navigate = useNavigate()
     const location = useLocation();
+    const { userData } = useUserData();
     const { routesMap, setRoutesMap } = useRoutes()
 
     useEffect(() => {
-        api.get<IRoutes[]>("Customer/Routes", response => {
-            setRoutesMap(response)
-        }, true);
-    }, [location.pathname]);
+        if (userData)
+            api.get<IRoutes[]>("Customer/Routes", response => {
+                setRoutesMap(response)
+            }, true);
+    }, [userData, location.pathname]);
 
     const getComponent = (route: IRoutes) => {
         const key = route.component as ComponentKeys

@@ -1,7 +1,10 @@
-import { ArrowLeftRight, PieChart, Banknote, Wallet, Eye, EyeClosed } from 'lucide-react';
+import { ArrowLeftRight, Banknote, Wallet, Eye, EyeClosed } from 'lucide-react';
 import { useState } from 'react';
+import type { IWallet } from '../interface/IWallet';
+import { maskValue } from '../util/mask';
+import type { AddFundsRef } from '../pages/wallet/modal/AddFunds';
 
-export const BalanceCard = () => {
+export const BalanceCard = ({ wallet, modalAddFundsRef }: { wallet: IWallet, modalAddFundsRef: React.RefObject<AddFundsRef | null> }) => {
     const [showBalance, setShowBalance] = useState<boolean>(false);
 
     return (
@@ -17,11 +20,11 @@ export const BalanceCard = () => {
                         </button>
                     </span>
                     <div className="flex items-baseline gap-2 mt-4">
-                        {showBalance && <span className="text-4xl md:text-5xl font-bold text-slate-900">R$ 4.025,60</span>}
+                        {showBalance && <span className="text-4xl md:text-5xl font-bold text-slate-900">{maskValue(wallet.amount)}</span>}
                         {!showBalance && <span className="text-5xl font-bold text-slate-900">R$ ****</span>}
                     </div>
                     <div className="flex items-center gap-2 mt-3 md:mt-6">
-                        <button className="text-indigo-600 hover:opacity-[0.7] cursor-pointer">
+                        <button onClick={() => modalAddFundsRef.current?.openModal()} className="text-indigo-600 hover:opacity-[0.7] cursor-pointer">
                             <span className="text-sm text-slate-500"><span className="font-mono flex items-center gap-2">Adicionar Saldo <Banknote /></span></span>
                         </button>
                     </div>
@@ -34,10 +37,10 @@ export const BalanceCard = () => {
                         <ArrowLeftRight className="w-4 h-4" />
                         Transações Recentes
                     </button>
-                    <button className="bg-white text-slate-400 px-6 py-3 rounded-2xl flex items-center gap-3 text-xs font-bold card-shadow hover:bg-slate-50 transition-all border border-gray-100">
+                    {/* <button className="bg-white text-slate-400 px-6 py-3 rounded-2xl flex items-center gap-3 text-xs font-bold card-shadow hover:bg-slate-50 transition-all border border-gray-100">
                         <PieChart className="w-4 h-4" />
                         Análise De Gastos
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>

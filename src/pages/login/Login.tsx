@@ -1,6 +1,6 @@
 import { useLogin } from './hook/useLogin';
 import loginBg from '../../assets/login-bg.png';
-import { Mail, Lock, LogIn, UtensilsCrossed, Bike, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, LogIn, Bike, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
